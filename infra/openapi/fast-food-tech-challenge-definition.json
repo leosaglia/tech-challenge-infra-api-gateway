@@ -209,6 +209,9 @@
                     "type": "http_proxy",
                     "httpMethod": "PUT",
                     "uri": "${vpc_link_base_url}/products/{id}",
+                    "requestParameters": {
+                        "integration.request.path.id": "method.request.path.id"
+                    },
                     "connectionType": "VPC_LINK",
                     "connectionId": "${vpc_link_id}"
                 },
@@ -264,6 +267,9 @@
                     "type": "http_proxy",
                     "httpMethod": "DELETE",
                     "uri": "${vpc_link_base_url}/products/{id}",
+                    "requestParameters": {
+                        "integration.request.path.id": "method.request.path.id"
+                    },
                     "connectionType": "VPC_LINK",
                     "connectionId": "${vpc_link_id}"
                 },
@@ -412,6 +418,9 @@
                     "type": "http_proxy",
                     "httpMethod": "GET",
                     "uri": "${vpc_link_base_url}/customers/{document}",
+                    "requestParameters": {
+                        "integration.request.path.document": "method.request.path.document"
+                    },
                     "connectionType": "VPC_LINK",
                     "connectionId": "${vpc_link_id}"
                 },
@@ -607,6 +616,9 @@
                     "type": "http_proxy",
                     "httpMethod": "POST",
                     "uri": "${vpc_link_base_url}/orders/{orderId}/payments",
+                    "requestParameters": {
+                        "integration.request.path.orderId": "method.request.path.orderId"
+                    },
                     "connectionType": "VPC_LINK",
                     "connectionId": "${vpc_link_id}"
                 },
