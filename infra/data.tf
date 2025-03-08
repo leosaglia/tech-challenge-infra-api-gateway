@@ -1,3 +1,5 @@
 data "aws_lb" "nlb" {
-  name = "fast-food-api-nlb"
+  tags = {
+    "kubernetes.io/service-name" = "default/tech-challenge-fast-food-api-service"
+  }
 }
