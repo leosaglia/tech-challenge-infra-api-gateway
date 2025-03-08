@@ -2,7 +2,7 @@ data "template_file" "api_template" {
   template = file("${path.module}/openapi/fast-food-tech-challenge-definition.json")
 
   vars = {
-    vpc_link_base_url = "criar-um-nlb-e-colocar-o-dns-aqui"
+    vpc_link_base_url = "http://${data.aws_lb.nlb.dns_name}:3001"
     vpc_link_id      = aws_api_gateway_vpc_link.vpc_link.id
   }
 }
