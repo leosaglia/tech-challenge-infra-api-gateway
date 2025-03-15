@@ -1,9 +1,16 @@
+data "aws_cognito_user_pool" "user_pool" {
+  user_pool_id = "us-east-1_G4qq9HKiL"
+}
+
 data "template_file" "api_template" {
   template = file("${path.module}/openapi/fast-food-tech-challenge-definition.json")
 
   vars = {
-    vpc_link_base_url = "http://${data.aws_lb.nlb.dns_name}:3001"
-    vpc_link_id      = aws_api_gateway_vpc_link.vpc_link.id
+    vpc_link_base_url       = "http://${data.aws_lb.nlb.dns_name}:3001"
+    vpc_link_id             = aws_api_gateway_vpc_link.vpc_link.id
+    cognito_arn             = data.aws_cognito_user_pool.user_pool.arn,
+    authorizer_uri          = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${data.aws_lambda_function.lambda_authorizer.arn}/invocations"
+    role_for_authorizer_arn = data.aws_iam_role.role.arn
   }
 }
 

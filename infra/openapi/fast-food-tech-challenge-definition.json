@@ -67,7 +67,7 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             },
@@ -130,7 +130,7 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             }
@@ -217,7 +217,7 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             },
@@ -275,7 +275,7 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             }
@@ -349,46 +349,36 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             }
         },
-        "/customers/{document}": {
-            "get": {
-                "operationId": "identifyCustomerByDocument",
-                "summary": "Identify a customer by document",
-                "parameters": [
-                    {
-                        "name": "document",
-                        "required": true,
-                        "in": "path",
-                        "description": "Customer document",
-                        "schema": {
-                            "type": "string"
+        "/customers/authentication": {
+            "post": {
+                "operationId": "authenticateCustomerByDocument",
+                "summary": "Authenticate a customer by document",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "document": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "document"
+                                ]
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Customer found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CustomerPresenter"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
+                        "description": "Customer authenticated"
                     },
                     "404": {
                         "description": "Customer not found",
@@ -415,20 +405,11 @@
                     "customers"
                 ],
                 "x-amazon-apigateway-integration": {
-                    "type": "http_proxy",
-                    "httpMethod": "GET",
-                    "uri": "${vpc_link_base_url}/customers/{document}",
-                    "requestParameters": {
-                        "integration.request.path.document": "method.request.path.document"
-                    },
-                    "connectionType": "VPC_LINK",
-                    "connectionId": "${vpc_link_id}"
-                },
-                "security": [
-                    {
-                        "LambdaAuthorizer": []
-                    }
-                ]
+                    "type": "aws_proxy",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "POST",
+                    "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:759334756834:function:tech-challenge-customer-token-generation/invocations"
+                }
             }
         },
         "/orders": {
@@ -555,7 +536,7 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             }
@@ -624,7 +605,7 @@
                 },
                 "security": [
                     {
-                        "LambdaAuthorizer": []
+                        "cognitoAuth": []
                     }
                 ]
             }
@@ -924,6 +905,29 @@
                     "createdAt",
                     "items"
                 ]
+            }
+        },
+        "securitySchemes": {
+            "cognitoAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "x-amazon-apigateway-authtype": "cognito_user_pools",
+                "x-amazon-apigateway-authorizer": {
+                    "type": "cognito_user_pools",
+                    "providerARNs": [ "${cognito_arn}" ]
+                }
+            },
+            "LambdaAuthorizer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "x-amazon-apigateway-authtype" : "custom",
+                "x-amazon-apigateway-authorizer" : { 
+                    "type" : "token",
+                    "authorizerUri" : "${authorizer_uri}",
+                    "authorizerCredentials" : "${role_for_authorizer_arn}"
+                }
             }
         }
     }
