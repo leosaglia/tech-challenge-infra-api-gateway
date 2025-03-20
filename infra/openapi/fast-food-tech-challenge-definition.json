@@ -67,7 +67,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             },
@@ -130,7 +130,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             }
@@ -217,7 +217,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             },
@@ -275,7 +275,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             }
@@ -349,7 +349,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             }
@@ -537,7 +537,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             }
@@ -606,7 +606,7 @@
                 },
                 "security": [
                     {
-                        "cognitoAuth": []
+                        "LambdaAuthorizer": []
                     }
                 ]
             }
@@ -909,16 +909,6 @@
             }
         },
         "securitySchemes": {
-            "cognitoAuth": {
-                "type": "apiKey",
-                "name": "Authorization",
-                "in": "header",
-                "x-amazon-apigateway-authtype": "cognito_user_pools",
-                "x-amazon-apigateway-authorizer": {
-                    "type": "cognito_user_pools",
-                    "providerARNs": [ "${cognito_arn}" ]
-                }
-            },
             "LambdaAuthorizer": {
                 "type": "apiKey",
                 "name": "Authorization",
