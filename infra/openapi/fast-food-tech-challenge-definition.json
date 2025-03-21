@@ -917,7 +917,8 @@
                 "x-amazon-apigateway-authorizer" : { 
                     "type" : "token",
                     "authorizerUri" : "${authorizer_uri}",
-                    "authorizerCredentials" : "${role_for_authorizer_arn}"
+                    "authorizerCredentials" : "${role_for_authorizer_arn}",
+                    "authorizerResultTtlInSeconds": 0
                 }
             }
         }
